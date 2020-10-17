@@ -1,5 +1,6 @@
+
 VANTA.DOTS({
-    el: "body",
+    el: ".content",
     mouseControls: true,
     touchControls: true,
     gyroControls: false,
