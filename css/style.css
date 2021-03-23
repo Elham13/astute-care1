@@ -14,8 +14,8 @@
 } */
 
 :root{
-    --color-text: #fff;
-	--color-bg: #000;
+    --color-text: #eee;
+	--color-bg: #313131;
 	--color-link: #1b198c;
 	--color-link-hover: #d3eaa2;
 	--color-info: #fff;
@@ -42,6 +42,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	overflow-y: hidden;
+	overflow-x: hidden;
 }
 
 /* Fade effect */
@@ -66,6 +67,16 @@ a:focus {
 	outline: none;
 }
 
+h1, h2, h3, h4, h5, h6{
+	font-family: var(--font-family-title);
+}
+
+/* pre loader */
+#loader-svg{
+	width: 0;
+	height: 0;
+}
+
 .loader{
 	position: absolute;
 	left: 50%;
@@ -77,15 +88,15 @@ a:focus {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	background: var(--color-bg);
-	z-index: 200;
+	z-index: 1000000;
 	overflow: hidden;
+	filter: url(#gooey);
 }
 
 .loader span{
 	position: absolute;
-	width: 25%;
-	height: 25%;
+	width: 45%;
+	height: 45%;
 	display: block;
 	animation: animateLoader 4s ease-in-out infinite;
 	animation-delay: calc(0.2s * var(--i));
@@ -96,8 +107,8 @@ a:focus {
 	position: absolute;
 	top: 0;
 	left: calc(50% - 10px);
-	width: 20px;
-	height: 20px;
+	width: 40px;
+	height: 40px;
 	border-radius: 50%;
 	box-shadow: 0 0 20px var(--color-title);
 	background: linear-gradient(var(--color-title), var(--path-fill-1));
@@ -111,6 +122,7 @@ a:focus {
 		 transform: rotate(360deg);
 	}
 }
+/* pre loader */
 
 .content {
 	position: relative;
@@ -121,12 +133,99 @@ a:focus {
 	pointer-events: none;
 }
 
+/* Search box */
+.search-box {
+	border: solid 3px var(--color-title) ;
+	display: inline-block;
+	position: relative;
+	border-radius: 50px;
+	pointer-events: auto;
+	position: absolute;
+	top: 2.5em;
+	left: 2.25em;
+ }
+ .search-box input[type="text"] {
+	font-family: Raleway, sans-serif;
+	font-size: 18px;
+	font-weight: 500;
+	width: 30px;
+	height: 30px;
+	padding: 10px;
+	border: none;
+	box-sizing: border-box;
+	border-radius: 50px;
+	transition: width 800ms cubic-bezier(0.5, -0.5, 0.5, 0.5) 600ms;
+	background: var(--color-main-bg);
+	color: #fff;
+ }
+ .search-box input[type="text"]:focus {
+	outline: none;
+ }
+ .search-box input[type="text"]:focus, 
+ .search-box input[type="text"]:not(:placeholder-shown) {
+	width: 50vw;
+	transition: width 800ms cubic-bezier(0.5, -0.5, 0.5, 1.5);
+ }
+
+ .search-box a {
+	width: 25px;
+	height: 25px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	bottom: -16px;
+	cursor: pointer;
+	right: -14px; 
+	transition: bottom 300ms ease-out 300ms, right 300ms ease-out 300ms;
+ }
+
+ .search-box a:before, 
+ .search-box a:after {
+	content: '';
+	height: 16px;
+	border-left: solid 3px var(--color-title);
+	position: absolute;
+	
+ }
+
+ .search-box a::before{
+	transform: rotate(-45deg);
+	top: 4px;
+	right: 10px;
+ }
+ .search-box a:after {
+	transform: rotate(45deg);
+	top: -25px;
+	opacity: 0;	
+	transition: top 300ms ease-out, right 300ms ease-out, opacity 300ms ease-out;
+ }
+
+ .search-box input[type="text"]:focus + a, 
+ .search-box input[type="text"]:not(:placeholder-shown) + a {
+	bottom: 2px;
+	right: 4px;
+	transition: bottom 300ms ease-out 800ms, right 300ms ease-out 800ms;
+ }
+ .search-box input[type="text"]:focus + a:after, 
+ .search-box input[type="text"]:not(:placeholder-shown) + a:after {
+	top: 4px;
+	right: 10px;
+	opacity: 1;
+	transition: top 300ms ease-out 1100ms, right 300ms ease-out 1100ms, opacity 300ms ease 1100ms;
+ }
+ 
+/* Search box */
+
 
 .demo-title {
 	color: var(--color-title);
 	font-family: var(--font-family-title);
 	font-size: var(--font-size-title);
-	font-weight: var(--font-weight-title);
+	font-weight: 800;
+	letter-spacing: 4px;
+	text-shadow: 0 0px 8px var(--color-title);
+	display: none;
 }
 
 .global-menu {
@@ -141,6 +240,26 @@ a:focus {
 	left: 0;
 	pointer-events: none;
 	z-index: 100;
+}
+
+.global-menu .logo{
+	position: absolute;
+	top: 1em;
+	left: 50%;
+	transform: translate(-50%);
+	background: rgba(255, 255, 255, 0.438);
+	border-radius: 50%;
+	width: 70px;
+	height: 70px;
+	display: block;
+	box-shadow: 0 0 4px white;
+}
+
+.global-menu .logo img{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 .global-menu img{
@@ -551,7 +670,20 @@ a:focus {
 		padding-bottom: 10em;
 		flex-direction: column;
 	}
+	.search-box{
+		top: 1.5em;
+		left: 1.5em;
+	}
+	.loader span{
+		width: 20%;
+		height: 20%;
+	}
+	.loader span::before{
+		width: 2em;
+		height: 2em;
+	}
 }
+
 
 @media screen and (max-width: 358px){
 	.global-menu__item{
@@ -559,9 +691,100 @@ a:focus {
 	}
 }
 
+/* About sectoin */
 .about{
-	background: green;
+	width: 100%;
+	min-height: 100vh;
+	background: var(--color-bg);
+	color: var(--color-text);
+	padding: 1em;
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+}
+
+.about .about-container-right:hover,
+.about .about-container-left:hover{
+	transform: scale(1.05);
+	transition: transform 0.2s ease-in-out;
+}
+
+
+.about h1{
+	color: var(--color-title);
+	font-size: 32px;
+	padding-bottom: 1em;
+	text-align: center;
+}
+
+.about p{
+	text-align: justify;
+	margin: 0 2em;
+}
+
+/* About sectoin */
+
+/* Testimonial section */
+.testimonial{
+	width: 100%;
+	min-height: 100vh;
+	background: var(--button-circle);
+	padding: 1em;
+}
+/* Testimonial section */
+
+/* Web & App dev section */
+.web-app{
+	background: var(--color-bg);
 	color: orange;
 	width: 100%;
 	min-height: 100vh;
 }
+
+.web-app .main-container{
+	padding: 1em;
+}
+
+.web-app .main-container h1{
+	text-align: center;
+	margin: 1em 0;
+	padding: 0.5em 0;
+	font-size: 32px;
+}
+
+.web-app .web-container{
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	padding: 1em;
+	grid-column-gap: 1em;
+}
+
+.main-container .web-container .website,
+.main-container .web-container .application{
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	padding: 1em;
+	color: var(--color-text);
+}
+
+
+.main-container .web-container .website h2,
+.main-container .web-container .application h2{
+	margin-bottom: 1em;
+}
+
+.main-container .web-container .website p,
+.main-container .web-container .application p{
+	margin-bottom: 2em;
+}
+
+@media screen and (max-width: 700px){
+	.web-app .web-container{
+		grid-template-columns: 1fr;
+	}
+	.web-app .main-container h1{
+		margin-top: 2em;
+	}
+}
+
+/* Web & App dev section */
